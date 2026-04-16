@@ -1,5 +1,11 @@
 import request from '@/utils/request'
 export { get } from '@/api/common.js'
+
+function sanitizePathParam(param) {
+    if (param == null) return ''
+    const str = String(param)
+    return str.replace(/\.\.[\/\\]/g, '').replace(/[\/\\]/g, '')
+}
 export function getPage(pageNum, pageSize) {
     return request({
         url: '/dump-record/page',
@@ -12,7 +18,7 @@ export function getPage(pageNum, pageSize) {
 }
 export function getJinNniuToday(start,end,pageNum,pageSize) {
     return request({
-        url: '/dump-record/period/' + start + '/'+end,
+        url: '/dump-record/period/' + sanitizePathParam(start) + '/'+ sanitizePathParam(end),
         method: 'get',
         // data: {
         //     pageNum: pageNum,
@@ -22,7 +28,7 @@ export function getJinNniuToday(start,end,pageNum,pageSize) {
 }
 export function getQuery(site_name, transporter, start, end, pageNum, pageSize) {
     return request({
-        url: '/dump-record/page/' + site_name + '/' + transporter + '/' + start + '/' + end + '/' + pageNum + '/' + pageSize,
+        url: '/dump-record/page/' + sanitizePathParam(site_name) + '/' + sanitizePathParam(transporter) + '/' + sanitizePathParam(start) + '/' + sanitizePathParam(end) + '/' + sanitizePathParam(pageNum) + '/' + sanitizePathParam(pageSize),
         method: 'get',
         // params: {
         //     pageNum: pageNum,
@@ -32,7 +38,7 @@ export function getQuery(site_name, transporter, start, end, pageNum, pageSize) 
 }
 export function getCarGps(car_number,start,end){
     return request({
-        url: '/gps-record/track/'+car_number+'/'+start+'/'+end,
+        url: '/gps-record/track/'+sanitizePathParam(car_number)+'/'+sanitizePathParam(start)+'/'+sanitizePathParam(end),
         method: 'get'
     })
 }
@@ -54,7 +60,7 @@ export function getAllGps(){
 // 车辆倾倒数据查询;若需全部站点数据,则site_name填all
 export function getTransportCars(start, end,site_name, pageNum, pageSize) {
     return request({
-        url: '/dump-record/dump_car/' + start + '/' + end + '/' + site_name + '/' + pageNum + '/' + pageSize,
+        url: '/dump-record/dump_car/' + sanitizePathParam(start) + '/' + sanitizePathParam(end) + '/' + sanitizePathParam(site_name) + '/' + sanitizePathParam(pageNum) + '/' + sanitizePathParam(pageSize),
         method: 'get',
         // params: {
         //     pageNum: pageNum,
